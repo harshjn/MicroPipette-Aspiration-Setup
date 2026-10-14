@@ -1,0 +1,463 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>AD624 Pressure Amplifier</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: the drawing sheet first, then the sketch reading and corrections beside a gain check, then pin map and parts list. */
+:root {
+  --paper: #EBEFEC;
+  --sheet: #FAFBF8;
+  --ink: #1C2421;
+  --muted: #5B6862;
+  --rule: #C3CCC7;
+  --wire: #1D5A87;
+  --part: #8C2F22;
+  --ic: #FBF2EC;
+  --note: #A35F00;
+  --note-ink: #FFFFFF;
+  --note-bg: #F5E6C8;
+  --ok: #24724A;
+  --bad: #B3261E;
+  --f-cond: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1513; --sheet: #161E1B; --ink: #E2E9E5; --muted: #97A59E; --rule: #2D3934;
+    --wire: #79B8E4; --part: #EE937C; --ic: #221A17; --note: #E9AE4C; --note-ink: #1A1408; --note-bg: #3A2D13;
+    --ok: #6FC897; --bad: #F2887E; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1513; --sheet: #161E1B; --ink: #E2E9E5; --muted: #97A59E; --rule: #2D3934;
+  --wire: #79B8E4; --part: #EE937C; --ic: #221A17; --note: #E9AE4C; --note-ink: #1A1408; --note-bg: #3A2D13;
+  --ok: #6FC897; --bad: #F2887E; color-scheme: dark;
+}
+body { background: var(--paper); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 56px; display: grid; gap: 36px; }
+
+.head { display: grid; gap: 6px; max-width: 70ch; }
+.eyebrow { margin: 0; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+h1 { margin: 0; font-family: var(--f-cond); font-weight: 600; font-size: clamp(2rem, 4.5vw, 2.9rem); line-height: 1.05; letter-spacing: .01em; text-wrap: balance; }
+.lead { margin: 4px 0 0; font-size: 1.08rem; color: var(--ink); }
+
+.sheetwrap { display: grid; gap: 10px; }
+.sheet { margin: 0; background: var(--sheet); border: 1px solid var(--rule); border-radius: 3px; overflow-x: auto; }
+.sheet svg { display: block; width: 100%; min-width: 780px; height: auto; }
+.caption { margin: 0; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+h2 { margin: 0 0 12px; font-family: var(--f-cond); font-weight: 600; font-size: 1.45rem; letter-spacing: .02em; text-wrap: balance; }
+p { margin: 0; }
+code, .mono { font-family: var(--f-mono); font-size: .86em; }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.two > * { min-width: 0; }
+.stack { display: grid; gap: 28px; }
+.reading p { max-width: 66ch; }
+
+.changes { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.changes li { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 12px; }
+.changes h3 { margin: 0 0 2px; font-size: 1rem; font-weight: 600; }
+.changes p { max-width: 64ch; }
+.tag { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--note); color: var(--note-ink); font-family: var(--f-mono); font-size: 12px; font-weight: 600; flex: none; margin-top: 1px; }
+
+.calc { background: var(--sheet); border: 1px solid var(--rule); border-radius: 4px; padding: 22px; display: grid; gap: 18px; }
+.calc h2 { margin: 0; }
+.field { display: grid; gap: 6px; }
+.field label { font-family: var(--f-cond); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.row { display: flex; gap: 10px; align-items: center; }
+.row input[type=range] { flex: 1; min-width: 0; accent-color: var(--part); }
+.val { font-family: var(--f-mono); font-size: 14px; min-width: 6ch; text-align: right; font-variant-numeric: tabular-nums; }
+input[type=number] { width: 100%; box-sizing: border-box; font: 500 15px var(--f-mono); color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 7px 9px; font-variant-numeric: tabular-nums; }
+input:focus-visible { outline: 2px solid var(--wire); outline-offset: 2px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.result { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; border-top: 1px solid var(--rule); padding-top: 16px; }
+.result .k { font-family: var(--f-cond); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.result .v { font-family: var(--f-mono); font-size: 1.6rem; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.chip { display: inline-block; margin-top: 4px; font-family: var(--f-mono); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; }
+.chip.ok { color: var(--ok); }
+.chip.bad { color: var(--bad); }
+.small { font-size: 14px; color: var(--muted); }
+.callout { font-size: 14px; background: var(--note-bg); border-radius: 3px; padding: 10px 12px; }
+
+.tablewrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th { text-align: left; font-family: var(--f-cond); font-weight: 600; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--ink); padding: 6px 10px 6px 0; }
+td { border-bottom: 1px solid var(--rule); padding: 6px 10px 6px 0; vertical-align: top; }
+td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; width: 3ch; }
+td.nm { font-family: var(--f-cond); font-weight: 600; font-size: 15px; letter-spacing: .02em; white-space: nowrap; }
+tr.nc td { color: var(--muted); }
+td .tag { width: 18px; height: 18px; font-size: 10px; vertical-align: -3px; margin-left: 4px; }
+
+.src { font-size: 14px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 14px; }
+.src a { color: var(--wire); }
+
+/* schematic */
+.s-frame { fill: none; stroke: var(--rule); stroke-width: 1; }
+.s-inner { fill: none; stroke: var(--muted); stroke-width: 1.1; }
+.s-tick { stroke: var(--rule); stroke-width: 1; }
+.s-wire { fill: none; stroke: var(--wire); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.s-part { fill: none; stroke: var(--part); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.s-body { fill: var(--ic); stroke: var(--part); stroke-width: 1.6; }
+.s-ic { fill: var(--ic); stroke: var(--part); stroke-width: 1.9; }
+.s-dot { fill: var(--wire); }
+.s-pin { fill: var(--sheet); stroke: var(--part); stroke-width: 1.4; }
+.s-nc { stroke: var(--muted); stroke-width: 1.4; }
+.s-arrow { fill: var(--part); }
+.s-tag { fill: var(--note); }
+.s-tbline { stroke: var(--muted); stroke-width: 1; fill: none; }
+.t-lbl { font-family: var(--f-cond); font-weight: 600; font-size: 13px; fill: var(--ink); letter-spacing: .05em; }
+.t-ann { font-family: var(--f-body); font-size: 10.5px; fill: var(--muted); }
+.t-pn { font-family: var(--f-mono); font-size: 9.5px; fill: var(--muted); }
+.t-pin { font-family: var(--f-cond); font-weight: 500; font-size: 12px; fill: var(--ink); letter-spacing: .03em; }
+.t-net { font-family: var(--f-mono); font-size: 10px; font-weight: 500; fill: var(--wire); }
+.t-ic { font-family: var(--f-cond); font-weight: 700; font-size: 24px; fill: var(--part); letter-spacing: .06em; }
+.t-zone { font-family: var(--f-mono); font-size: 9.5px; fill: var(--muted); }
+.t-tag { font-family: var(--f-mono); font-size: 10px; font-weight: 600; fill: var(--note-ink); }
+.t-note { font-family: var(--f-body); font-size: 11.5px; fill: var(--ink); }
+.t-tbt { font-family: var(--f-cond); font-weight: 700; font-size: 18px; fill: var(--ink); letter-spacing: .06em; }
+.t-tbc { font-family: var(--f-mono); font-size: 8px; fill: var(--muted); letter-spacing: .06em; }
+.t-tbv { font-family: var(--f-mono); font-size: 11px; fill: var(--ink); }
+
+@media (max-width: 800px) {
+  .two { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+}
+@media (max-width: 420px) {
+  .pair, .result { grid-template-columns: 1fr; }
+  .calc { padding: 16px; }
+}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">Schematic · Sheet 1 of 1 · Rev A</p>
+    <h1>AD624 Pressure Amplifier</h1>
+    <p class="lead">A single-ended pressure sensor feeds an AD624 instrumentation amplifier. VAR1 sets the gain, the board runs from ±12&nbsp;V, and the amplified signal leaves on I/O&nbsp;3. Redrawn from your hand sketch against the datasheet pinout.</p>
+  </header>
+
+  <div class="sheetwrap">
+    <figure class="sheet">
+      <svg viewBox="0 0 1000 660" role="img" aria-labelledby="schTitle">
+        <title id="schTitle">Schematic: pressure sensor J1 into AD624 U1, gain set by RV1, input offset null RV2, plus and minus 12 volt supply on J2 with decoupling, output on J3</title>
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" class="s-arrow"/>
+          </marker>
+        </defs>
+
+        <!-- sheet frame and zones -->
+        <rect x="8" y="8" width="984" height="644" class="s-frame"/>
+        <rect x="24" y="24" width="952" height="612" class="s-inner"/>
+        <g class="s-tick">
+          <line x1="262" y1="8" x2="262" y2="24"/><line x1="500" y1="8" x2="500" y2="24"/><line x1="738" y1="8" x2="738" y2="24"/>
+          <line x1="262" y1="636" x2="262" y2="652"/><line x1="500" y1="636" x2="500" y2="652"/><line x1="738" y1="636" x2="738" y2="652"/>
+          <line x1="8" y1="228" x2="24" y2="228"/><line x1="8" y1="432" x2="24" y2="432"/>
+          <line x1="976" y1="228" x2="992" y2="228"/><line x1="976" y1="432" x2="992" y2="432"/>
+        </g>
+        <g class="t-zone" text-anchor="middle">
+          <text x="143" y="20">1</text><text x="381" y="20">2</text><text x="619" y="20">3</text><text x="857" y="20">4</text>
+          <text x="143" y="648">1</text><text x="381" y="648">2</text><text x="619" y="648">3</text><text x="857" y="648">4</text>
+          <text x="16" y="130">A</text><text x="16" y="334">B</text><text x="16" y="538">C</text>
+          <text x="984" y="130">A</text><text x="984" y="334">B</text><text x="984" y="538">C</text>
+        </g>
+
+        <!-- legend -->
+        <circle cx="742" cy="44" r="8" class="s-tag"/><text x="742" y="47.5" text-anchor="middle" class="t-tag">n</text>
+        <text x="756" y="48" class="t-ann">change from the hand sketch, see notes</text>
+
+        <!-- J1 pressure sensor -->
+        <text x="123" y="114" text-anchor="middle" class="t-lbl">J1 · I/O 1</text>
+        <text x="123" y="128" text-anchor="middle" class="t-ann">pressure sensor</text>
+        <rect x="110" y="140" width="26" height="115" class="s-body"/>
+        <g class="t-pn" text-anchor="middle"><text x="123" y="164">1</text><text x="123" y="209">2</text><text x="123" y="244">3</text></g>
+        <g class="t-pin" text-anchor="end"><text x="102" y="164">+12V</text><text x="102" y="209">SIG</text><text x="102" y="244">GND (−)</text></g>
+        <path d="M136 160 H200 V142" class="s-wire"/>
+        <line x1="192" y1="142" x2="208" y2="142" class="s-wire"/>
+        <text x="200" y="134" text-anchor="middle" class="t-net">+12V</text>
+        <path d="M136 205 H400" class="s-wire"/>
+        <text x="300" y="199" text-anchor="middle" class="t-net">SIG</text>
+        <path d="M136 240 H400" class="s-wire"/>
+        <path d="M240 240 V262" class="s-wire"/>
+        <g class="s-wire"><line x1="228" y1="262" x2="252" y2="262"/><line x1="233" y1="267" x2="247" y2="267"/><line x1="238" y1="272" x2="242" y2="272"/></g>
+        <circle cx="240" cy="240" r="3" class="s-dot"/>
+        <circle cx="136" cy="160" r="3" class="s-pin"/><circle cx="136" cy="205" r="3" class="s-pin"/><circle cx="136" cy="240" r="3" class="s-pin"/>
+
+        <!-- U1 AD624 -->
+        <text x="434" y="166" class="t-lbl">U1</text>
+        <rect x="430" y="175" width="170" height="290" class="s-ic"/>
+        <text x="515" y="326" text-anchor="middle" class="t-ic">AD624</text>
+        <!-- left pins -->
+        <g class="s-part">
+          <line x1="400" y1="205" x2="430" y2="205"/><line x1="400" y1="240" x2="430" y2="240"/>
+          <line x1="400" y1="295" x2="430" y2="295"/><line x1="400" y1="350" x2="430" y2="350"/>
+          <line x1="400" y1="405" x2="430" y2="405"/><line x1="400" y1="445" x2="430" y2="445"/>
+        </g>
+        <g class="t-pn" text-anchor="middle">
+          <text x="415" y="201">2</text><text x="415" y="236">1</text><text x="415" y="291">16</text>
+          <text x="415" y="346">3</text><text x="415" y="401">4</text><text x="415" y="441">5</text>
+        </g>
+        <g class="t-pin">
+          <text x="438" y="209">+IN</text><text x="438" y="244">−IN</text><text x="438" y="299">RG1</text>
+          <text x="438" y="354">RG2</text><text x="438" y="409">IN NULL</text><text x="438" y="449">IN NULL</text>
+        </g>
+        <!-- right pins -->
+        <g class="s-part">
+          <line x1="600" y1="205" x2="630" y2="205"/><line x1="600" y1="240" x2="630" y2="240"/>
+          <line x1="600" y1="295" x2="630" y2="295"/><line x1="600" y1="340" x2="630" y2="340"/>
+          <line x1="600" y1="365" x2="630" y2="365"/><line x1="600" y1="390" x2="630" y2="390"/>
+          <line x1="600" y1="415" x2="630" y2="415"/><line x1="600" y1="440" x2="630" y2="440"/>
+        </g>
+        <g class="t-pn" text-anchor="middle">
+          <text x="615" y="201">9</text><text x="615" y="236">10</text><text x="615" y="291">6</text>
+          <text x="615" y="336">13</text><text x="615" y="361">12</text><text x="615" y="386">11</text>
+          <text x="615" y="411">14</text><text x="615" y="436">15</text>
+        </g>
+        <g class="t-pin" text-anchor="end">
+          <text x="592" y="209">OUT</text><text x="592" y="244">SENSE</text><text x="592" y="299">REF</text>
+          <text x="592" y="344">G=100</text><text x="592" y="369">G=200</text><text x="592" y="394">G=500</text>
+          <text x="592" y="419">OUT NULL</text><text x="592" y="444">OUT NULL</text>
+        </g>
+        <g class="s-nc">
+          <path d="M626 336 L634 344 M626 344 L634 336"/><path d="M626 361 L634 369 M626 369 L634 361"/>
+          <path d="M626 386 L634 394 M626 394 L634 386"/><path d="M626 411 L634 419 M626 419 L634 411"/>
+          <path d="M626 436 L634 444 M626 444 L634 436"/>
+        </g>
+        <!-- supply pins -->
+        <line x1="515" y1="145" x2="515" y2="175" class="s-part"/>
+        <line x1="515" y1="465" x2="515" y2="495" class="s-part"/>
+        <text x="521" y="162" class="t-pn">8</text><text x="521" y="484" class="t-pn">7</text>
+        <text x="515" y="192" text-anchor="middle" class="t-pin">+VS</text>
+        <text x="515" y="458" text-anchor="middle" class="t-pin">−VS</text>
+        <path d="M515 145 V132" class="s-wire"/><line x1="507" y1="132" x2="523" y2="132" class="s-wire"/>
+        <text x="515" y="124" text-anchor="middle" class="t-net">+12V</text>
+        <path d="M515 495 V508" class="s-wire"/><line x1="507" y1="508" x2="523" y2="508" class="s-wire"/>
+        <text x="515" y="521" text-anchor="middle" class="t-net">−12V</text>
+        <circle cx="550" cy="142" r="8" class="s-tag"/><text x="550" y="145.5" text-anchor="middle" class="t-tag">1</text>
+        <circle cx="550" cy="490" r="8" class="s-tag"/><text x="550" y="493.5" text-anchor="middle" class="t-tag">1</text>
+
+        <!-- RV1 gain resistor (VAR1) -->
+        <path d="M400 295 H350 V305" class="s-wire"/>
+        <rect x="342" y="305" width="16" height="35" class="s-body"/>
+        <path d="M350 340 V350 H400" class="s-wire"/>
+        <line x1="333" y1="349" x2="366" y2="298" class="s-part" marker-end="url(#arr)"/>
+        <text x="330" y="316" text-anchor="end" class="t-lbl">RV1 (VAR1)</text>
+        <text x="330" y="330" text-anchor="end" class="t-ann">1 kΩ · gain</text>
+        <circle cx="381" cy="322" r="8" class="s-tag"/><text x="381" y="325.5" text-anchor="middle" class="t-tag">4</text>
+
+        <!-- RV2 input offset null (VAR2) -->
+        <path d="M400 405 H350 V412" class="s-wire"/>
+        <rect x="342" y="412" width="16" height="26" class="s-body"/>
+        <path d="M350 438 V445 H400" class="s-wire"/>
+        <path d="M310 470 V425 H341" class="s-wire" marker-end="url(#arr)"/>
+        <line x1="302" y1="470" x2="318" y2="470" class="s-wire"/>
+        <text x="310" y="483" text-anchor="middle" class="t-net">−12V</text>
+        <text x="300" y="414" text-anchor="end" class="t-lbl">RV2 (VAR2)</text>
+        <text x="300" y="428" text-anchor="end" class="t-ann">10 kΩ · input null</text>
+        <circle cx="283" cy="448" r="8" class="s-tag"/><text x="283" y="451.5" text-anchor="middle" class="t-tag">2</text>
+
+        <!-- output side -->
+        <path d="M630 205 H850" class="s-wire"/>
+        <path d="M630 240 H650 V205" class="s-wire"/>
+        <circle cx="650" cy="205" r="3" class="s-dot"/>
+        <text x="750" y="199" text-anchor="middle" class="t-net">VOUT</text>
+        <path d="M630 295 H670 V313" class="s-wire"/>
+        <g class="s-wire"><line x1="658" y1="313" x2="682" y2="313"/><line x1="663" y1="318" x2="677" y2="318"/><line x1="668" y1="323" x2="672" y2="323"/></g>
+
+        <!-- J3 output -->
+        <text x="863" y="164" text-anchor="middle" class="t-lbl">J3 · I/O 3</text>
+        <text x="863" y="178" text-anchor="middle" class="t-ann">output</text>
+        <rect x="850" y="188" width="26" height="70" class="s-body"/>
+        <g class="t-pn" text-anchor="middle"><text x="863" y="209">1</text><text x="863" y="244">2</text></g>
+        <g class="t-pin"><text x="884" y="209">VOUT</text><text x="884" y="244">GND</text></g>
+        <path d="M850 240 H800 V262" class="s-wire"/>
+        <g class="s-wire"><line x1="788" y1="262" x2="812" y2="262"/><line x1="793" y1="267" x2="807" y2="267"/><line x1="798" y1="272" x2="802" y2="272"/></g>
+        <circle cx="850" cy="205" r="3" class="s-pin"/><circle cx="850" cy="240" r="3" class="s-pin"/>
+
+        <!-- sheet notes -->
+        <text x="712" y="330" class="t-lbl">NOTES</text>
+        <g class="t-note">
+          <text x="712" y="349">1. U1 pins 11–15 not connected.</text>
+          <text x="712" y="366">2. G = 1 + 40 kΩ / R(RV1), ±20 % absolute.</text>
+          <text x="712" y="383">3. C1, C2 within 10 mm of U1 pins 8 and 7.</text>
+          <text x="712" y="400">4. −IN returns to sensor GND at J1.</text>
+          <text x="712" y="417">5. SENSE tied to OUT at U1.</text>
+        </g>
+
+        <!-- J2 supply and decoupling -->
+        <text x="113" y="510" text-anchor="middle" class="t-lbl">J2 · I/O 2</text>
+        <text x="113" y="523" text-anchor="middle" class="t-ann">±12 V supply</text>
+        <rect x="100" y="530" width="26" height="90" class="s-body"/>
+        <g class="t-pn" text-anchor="middle"><text x="113" y="549">1</text><text x="113" y="579">2</text><text x="113" y="609">3</text></g>
+        <g class="t-pin" text-anchor="end"><text x="92" y="549">+12V</text><text x="92" y="579">0V</text><text x="92" y="609">−12V</text></g>
+        <path d="M126 545 H420 V532" class="s-wire"/><line x1="412" y1="532" x2="428" y2="532" class="s-wire"/>
+        <text x="420" y="524" text-anchor="middle" class="t-net">+12V</text>
+        <path d="M126 575 H440 V585" class="s-wire"/>
+        <g class="s-wire"><line x1="428" y1="585" x2="452" y2="585"/><line x1="433" y1="590" x2="447" y2="590"/><line x1="438" y1="595" x2="442" y2="595"/></g>
+        <path d="M126 605 H400 V617" class="s-wire"/><line x1="392" y1="617" x2="408" y2="617" class="s-wire"/>
+        <text x="400" y="630" text-anchor="middle" class="t-net">−12V</text>
+        <!-- C1 / C2 ceramic -->
+        <path d="M200 545 V556 M200 564 V575 M200 575 V586 M200 594 V605" class="s-wire"/>
+        <g class="s-part"><line x1="190" y1="556" x2="210" y2="556"/><line x1="190" y1="564" x2="210" y2="564"/>
+          <line x1="190" y1="586" x2="210" y2="586"/><line x1="190" y1="594" x2="210" y2="594"/></g>
+        <text x="216" y="564" class="t-pn">C1 100n</text><text x="216" y="594" class="t-pn">C2 100n</text>
+        <!-- C3 / C4 bulk -->
+        <path d="M300 545 V556 M300 564 V575 M300 575 V586 M300 594 V605" class="s-wire"/>
+        <g class="s-part"><line x1="290" y1="556" x2="310" y2="556"/><path d="M290 566 Q300 560 310 566"/>
+          <line x1="290" y1="586" x2="310" y2="586"/><path d="M290 596 Q300 590 310 596"/></g>
+        <text x="284" y="553" text-anchor="end" class="t-pn">+</text><text x="284" y="583" text-anchor="end" class="t-pn">+</text>
+        <text x="316" y="564" class="t-pn">C3 10µ</text><text x="316" y="594" class="t-pn">C4 10µ</text>
+        <g class="s-dot"><circle cx="200" cy="545" r="3"/><circle cx="200" cy="575" r="3"/><circle cx="200" cy="605" r="3"/>
+          <circle cx="300" cy="545" r="3"/><circle cx="300" cy="575" r="3"/><circle cx="300" cy="605" r="3"/></g>
+        <circle cx="126" cy="545" r="3" class="s-pin"/><circle cx="126" cy="575" r="3" class="s-pin"/><circle cx="126" cy="605" r="3" class="s-pin"/>
+        <circle cx="378" cy="560" r="8" class="s-tag"/><text x="378" y="563.5" text-anchor="middle" class="t-tag">3</text>
+
+        <!-- title block -->
+        <rect x="660" y="556" width="316" height="80" class="s-tbline"/>
+        <line x1="660" y1="584" x2="976" y2="584" class="s-tbline"/>
+        <line x1="660" y1="610" x2="976" y2="610" class="s-tbline"/>
+        <line x1="740" y1="610" x2="740" y2="636" class="s-tbline"/>
+        <line x1="870" y1="610" x2="870" y2="636" class="s-tbline"/>
+        <text x="670" y="577" class="t-tbt">AD624 PRESSURE AMPLIFIER</text>
+        <text x="670" y="601" class="t-ann">Redrawn from hand sketch · single-ended sensor input</text>
+        <text x="668" y="619" class="t-tbc">REV</text><text x="668" y="632" class="t-tbv">A</text>
+        <text x="748" y="619" class="t-tbc">DATE</text><text x="748" y="632" class="t-tbv">2026-10-14</text>
+        <text x="878" y="619" class="t-tbc">SHEET</text><text x="878" y="632" class="t-tbv">1 / 1</text>
+      </svg>
+    </figure>
+    <p class="caption"><span class="tag">n</span> Numbered amber tags mark where this drawing differs from your sketch. Everything else is drawn as you had it.</p>
+  </div>
+
+  <section class="two">
+    <div class="stack">
+      <div class="reading">
+        <h2>Reading of the sketch</h2>
+        <p>The sensor's SIG line (I/O 1) goes to +IN, pin 2, and the sensor's ground returns to −IN, pin 1, so the amplifier measures SIG relative to the sensor's own ground. VAR1 sits across RG1 and RG2 (pins 16 and 3) and sets the gain. REF (pin 6) is grounded and SENSE (pin 10) is tied to OUT (pin 9), so the output is referenced to ground and leaves on I/O 3. The sensor takes its +12&nbsp;V from the same supply connector as the amplifier.</p>
+      </div>
+      <div>
+        <h2>Changes from the sketch</h2>
+        <ol class="changes">
+          <li><span class="tag">1</span><div><h3>Supply pins 7 and 8</h3><p>On the AD624, pin&nbsp;7 is −VS and pin&nbsp;8 is +VS. In the sketch the two supply wires cross near those pins and I can't tell which rail lands where. Check this before power-up, because reversed rails can destroy the chip.</p></div></li>
+          <li><span class="tag">2</span><div><h3>VAR2 wiring</h3><p>In the sketch VAR2 runs between +12&nbsp;V and GND, with its wiper heading toward pin&nbsp;4. The datasheet's input offset null is a 10&nbsp;kΩ pot across pins 4 and 5 with the wiper to −VS, so that is how it's drawn here. If you meant VAR2 as a zero adjust that shifts the output, it belongs on REF (pin&nbsp;6) through an op-amp buffer. REF needs a near-zero source impedance: the datasheet notes that even 1&nbsp;Ω on REF cuts common-mode rejection to about 80&nbsp;dB.</p></div></li>
+          <li><span class="tag">3</span><div><h3>Decoupling added</h3><p>The sketch has none. Put 100&nbsp;nF ceramic from each supply pin to ground right at U1, plus 10&nbsp;µF per rail at the supply connector.</p></div></li>
+          <li><span class="tag">4</span><div><h3>VAR1 turned to zero</h3><p>With VAR1 as a bare rheostat, turning it fully down shorts RG1 to RG2 and the gain runs away, so the output slams into a rail. A fixed resistor in series sets a ceiling: 100&nbsp;Ω gives a range of about 37 to 401. Size it from your sensor's full-scale signal with the gain check.</p></div></li>
+        </ol>
+      </div>
+    </div>
+
+    <aside class="calc" aria-labelledby="calcTitle">
+      <h2 id="calcTitle">Gain check</h2>
+      <div class="field">
+        <label for="rv1">VAR1 setting</label>
+        <div class="row"><input type="range" id="rv1" min="0" max="1000" step="10" value="500"><span class="val" id="rv1v">500 Ω</span></div>
+      </div>
+      <div class="pair">
+        <div class="field"><label for="rser">Series resistor (Ω)</label><input type="number" id="rser" min="0" step="10" value="100" inputmode="decimal"></div>
+        <div class="field"><label for="vfs">Sensor full scale (mV)</label><input type="number" id="vfs" min="0" step="1" value="100" inputmode="decimal"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div><div class="k">Gain</div><div class="v" id="gain">—</div></div>
+        <div><div class="k">Output at full scale</div><div class="v" id="vout">—</div><span class="chip ok" id="chip">—</span></div>
+      </div>
+      <p class="small" id="range">—</p>
+      <p class="small">G = 1 + 40&nbsp;kΩ / (VAR1 + series R). The internal resistors are only ±20&nbsp;% absolute, so calibrate against a known pressure. Output swing is taken as ±9&nbsp;V, a little under the ±10&nbsp;V the datasheet rates at ±15&nbsp;V supplies. The 100&nbsp;mV full scale is an example value; enter your sensor's.</p>
+      <p class="callout">If your sensor already outputs volts (many 3-wire sensors give 0.5–4.5&nbsp;V or 0–5&nbsp;V), even VAR1's lowest gain of 41 will saturate the output. Leave pins 3 and 16 open for G&nbsp;=&nbsp;1, or use a much larger gain resistor.</p>
+    </aside>
+  </section>
+
+  <section class="two">
+    <div>
+      <h2>U1 pin map</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Pin</th><th>Name</th><th>Connects to</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td class="nm">−IN</td><td>Sensor GND at J1 pin 3 (ground)</td></tr>
+            <tr><td class="n">2</td><td class="nm">+IN</td><td>Sensor SIG, J1 pin 2</td></tr>
+            <tr><td class="n">3</td><td class="nm">RG2</td><td>RV1 (VAR1), other end</td></tr>
+            <tr><td class="n">4</td><td class="nm">IN NULL</td><td>RV2 (VAR2), one end<span class="tag">2</span></td></tr>
+            <tr><td class="n">5</td><td class="nm">IN NULL</td><td>RV2 (VAR2), other end<span class="tag">2</span></td></tr>
+            <tr><td class="n">6</td><td class="nm">REF</td><td>Ground, short and direct</td></tr>
+            <tr><td class="n">7</td><td class="nm">−VS</td><td>−12 V, J2 pin 3; C2 to ground<span class="tag">1</span></td></tr>
+            <tr><td class="n">8</td><td class="nm">+VS</td><td>+12 V, J2 pin 1; C1 to ground<span class="tag">1</span></td></tr>
+            <tr><td class="n">9</td><td class="nm">OUT</td><td>J3 pin 1 (VOUT) and pin 10</td></tr>
+            <tr><td class="n">10</td><td class="nm">SENSE</td><td>Pin 9</td></tr>
+            <tr class="nc"><td class="n">11</td><td class="nm">G=500</td><td>Not connected</td></tr>
+            <tr class="nc"><td class="n">12</td><td class="nm">G=200</td><td>Not connected</td></tr>
+            <tr class="nc"><td class="n">13</td><td class="nm">G=100</td><td>Not connected</td></tr>
+            <tr class="nc"><td class="n">14</td><td class="nm">OUT NULL</td><td>Not connected</td></tr>
+            <tr class="nc"><td class="n">15</td><td class="nm">OUT NULL</td><td>Not connected</td></tr>
+            <tr><td class="n">16</td><td class="nm">RG1</td><td>RV1 (VAR1), one end</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h2>Parts list</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Ref</th><th>Value</th><th>Part</th></tr></thead>
+          <tbody>
+            <tr><td class="nm">U1</td><td>AD624</td><td>Instrumentation amplifier, 16-pin DIP</td></tr>
+            <tr><td class="nm">RV1</td><td>1 kΩ</td><td>VAR1, multiturn trimmer used as a variable resistor</td></tr>
+            <tr><td class="nm">RV2</td><td>10 kΩ</td><td>VAR2, trimmer for input offset null</td></tr>
+            <tr><td class="nm">C1, C2</td><td>100 nF</td><td>Ceramic, X7R, at U1 supply pins<span class="tag">3</span></td></tr>
+            <tr><td class="nm">C3, C4</td><td>10 µF</td><td>25 V electrolytic or tantalum, at J2<span class="tag">3</span></td></tr>
+            <tr><td class="nm">J1</td><td>3-pin</td><td>I/O 1, pressure sensor: +12 V, SIG, GND</td></tr>
+            <tr><td class="nm">J2</td><td>3-pin</td><td>I/O 2, supply: +12 V, 0 V, −12 V</td></tr>
+            <tr><td class="nm">J3</td><td>2-pin</td><td>I/O 3, output: VOUT, GND</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="src">Pinout, gain equation, offset-null wiring and REF impedance figures are from the <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/AD624.pdf" target="_blank" rel="noopener">Analog Devices AD624 datasheet, Rev. C</a>.</footer>
+</div>
+
+<script>
+(function () {
+  var rv = document.getElementById('rv1');
+  var rs = document.getElementById('rser');
+  var fs = document.getElementById('vfs');
+  var rvv = document.getElementById('rv1v');
+  var gainEl = document.getElementById('gain');
+  var voutEl = document.getElementById('vout');
+  var chip = document.getElementById('chip');
+  var rangeEl = document.getElementById('range');
+  var SWING = 9;
+
+  function g(r) { return 1 + 40000 / r; }
+  function fmtG(x) { return x >= 100 ? x.toFixed(0) : x.toFixed(1); }
+  function num(el) { var v = parseFloat(el.value); return isFinite(v) && v >= 0 ? v : 0; }
+
+  function update() {
+    var rvr = num(rv), rsr = num(rs), vfs = num(fs);
+    rvv.textContent = rvr + ' Ω';
+    var r = rvr + rsr;
+    if (r <= 0) {
+      gainEl.textContent = '∞';
+      voutEl.textContent = 'rail';
+      chip.textContent = 'Saturates';
+      chip.className = 'chip bad';
+    } else {
+      var G = g(r);
+      var v = G * vfs / 1000;
+      gainEl.textContent = fmtG(G);
+      voutEl.textContent = v.toFixed(2) + ' V';
+      var ok = v <= SWING;
+      chip.textContent = ok ? 'Within swing' : 'Clips';
+      chip.className = 'chip ' + (ok ? 'ok' : 'bad');
+    }
+    var gmin = g(1000 + rsr);
+    var gmax = rsr > 0 ? fmtG(g(rsr)) : 'unbounded';
+    rangeEl.textContent = 'With this series resistor, VAR1 spans G = ' + fmtG(gmin) + ' (VAR1 at 1 kΩ) to ' + gmax + ' (VAR1 at 0 Ω).';
+  }
+  [rv, rs, fs].forEach(function (el) { el.addEventListener('input', update); });
+  update();
+})();
+</script>
+
+</body></html>
