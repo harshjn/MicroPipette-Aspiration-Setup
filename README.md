@@ -7,5 +7,5 @@ Setup involves:
 3. Data Acquisition from NI DAQ in Python via: https://github.com/harshjn/MicroPipette-Aspiration-Setup/blob/main/optimized-daq-measurement.py
 4. The experimental setup is detailed in the image below:
 
-   ![Uploading Presentation_beamer1.png…]()
 
+<img width="1920" height="1331" alt="Presentation_beamer1" src="https://github.com/user-attachments/assets/0dffbd41-e0cd-4f85-920d-b908e75fc65f" />
