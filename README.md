@@ -21,9 +21,8 @@ Cite this project as:
   title        = {{MicroPipette-Aspiration-Setup}: A Methodology to Build a
                   Micropipette Aspiration Setup for Microbiology and Synthetic
                   Biology Experiments with Lipid Biomembranes},
-  year         = {2025},
+  year         = {2026},
   publisher    = {GitHub},
-  howpublished = {\url{https://github.com/harshjn/MicroPipette-Aspiration-Setup}},
-  note         = {Accessed: 2026-10-14}
+  howpublished = {\url{https://github.com/harshjn/MicroPipette-Aspiration-Setup}}
 }
 ```
