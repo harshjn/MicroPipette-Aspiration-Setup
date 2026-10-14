@@ -12,7 +12,10 @@ Setup involves:
 <img width="1920" height="1331" alt="Presentation_beamer1" src="https://github.com/user-attachments/assets/0dffbd41-e0cd-4f85-920d-b908e75fc65f" />
 
 
+## Citation
 Cite this project as:
+
+```bibtex
 @misc{jain2025micropipette,
   author       = {Jain, Harsh},
   title        = {{MicroPipette-Aspiration-Setup}: A Methodology to Build a
@@ -20,5 +23,7 @@ Cite this project as:
                   Biology Experiments with Lipid Biomembranes},
   year         = {2025},
   publisher    = {GitHub},
-  howpublished = {\url{https://github.com/harshjn/MicroPipette-Aspiration-Setup}}
-  }
+  howpublished = {\url{https://github.com/harshjn/MicroPipette-Aspiration-Setup}},
+  note         = {Accessed: 2026-10-14}
+}
+```
