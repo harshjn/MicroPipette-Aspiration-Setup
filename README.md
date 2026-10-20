@@ -1,5 +1,6 @@
 # MicroPipette-Aspiration-Setup
 This contains a detailed methodology to build a micro-pipette aspiration setup for micro-biology and synthetic biology experiments with lipid bio-membranes.
+![Lipid membrane aspirated time-lapse](test-data2-1s.gif)
 
 Setup involves:
 1. A syringe Pump, [Harvard 33DS](https://www.harvardapparatus.com/pump-33-dds-dual-drive-system-syringe-pump.html), controlled in Python via the code: https://github.com/harshjn/MicroPipette-Aspiration-Setup/blob/main/SyringeControl_GUI.py
